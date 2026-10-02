@@ -8,7 +8,7 @@ import javax.swing.Icon;
 public interface XirIcons
 {
   @NonNls
-  Icon XIR_ICON = IconLoader.findIcon("/icons/lambda.png");
+  Icon XIR_ICON = IconLoader.findIcon("/icons/xir.png");
 
   Icon SYMBOL = IconLoader.findIcon("/icons/symbol.png");
 

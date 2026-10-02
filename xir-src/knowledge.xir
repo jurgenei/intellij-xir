@@ -1,0 +1,17 @@
+(.
+  (sel:Observations
+    {xmlns:c "http://jurgenei.name/canonical"
+     xmlns:sel "http://jurgenei.name/sel"
+     group "knowledge"}
+    (sel:Observation
+      {group "knowledge"
+       ruleContext "c:Paragraph"
+       source "report"
+       type "paragraph"}
+      (sel:Evidence
+        (c:Paragraph "SAP sends order status updates to CRM."))
+      (sel:Context
+        (c:Title "Order Summary"))
+      (sel:Source
+        {document "canonical-order.xir"
+         path "/c:Document[1]/c:Body[1]/c:Section[1]/c:Paragraph[1]"}))))

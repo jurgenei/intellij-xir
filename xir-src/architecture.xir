@@ -1,0 +1,20 @@
+(.
+  (sel:Observations
+    {xmlns:c "http://jurgenei.name/canonical"
+     xmlns:sel "http://jurgenei.name/sel"
+     group "architecture"}
+    (sel:Observation
+      {group "architecture"
+       ruleContext "c:Connector"
+       source "report"
+       type "relationship-candidate"}
+      (sel:Evidence
+        (c:Connector
+          {protocol "REST"
+           source "sap"
+           target "crm"}))
+      (sel:Context
+        (c:Title "Core Integration Landscape"))
+      (sel:Source
+        {document "canonical-order.xir"
+         path "/c:Document[1]/c:Body[1]/c:Diagram[1]/c:Connector[1]"}))))

@@ -1,0 +1,18 @@
+(.
+  (sel:Observations
+    {xmlns:c "http://jurgenei.name/canonical"
+     xmlns:sel "http://jurgenei.name/sel"
+     group "terminology"}
+    (sel:Observation
+      {group "terminology"
+       ruleContext "c:Term"
+       source "report"
+       type "term"}
+      (sel:Evidence
+        (c:Term
+          {name "Master Data"} "Core entities shared across systems."))
+      (sel:Context
+        (c:Title "Business Terms"))
+      (sel:Source
+        {document "canonical-order.xir"
+         path "/c:Document[1]/c:Body[1]/c:Glossary[1]/c:Term[1]"}))))

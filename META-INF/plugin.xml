@@ -4,7 +4,7 @@
   <description>Plugin for supporting XIR programming language</description>
   <category>Custom Languages</category>
   <version>0.1.11</version>
-  <vendor url="https://saigut.com">Tony Saigut</vendor>
+  <vendor url="https://github.com/jurgenei">Jurgen Hildebrand</vendor>
   <depends>com.intellij.modules.lang</depends>
   <depends>com.intellij.modules.platform</depends>
   <idea-version since-build="201.6668.113"/>
