@@ -1,0 +1,15 @@
+package main;
+
+import com.intellij.openapi.util.IconLoader;
+import org.jetbrains.annotations.NonNls;
+
+import javax.swing.Icon;
+
+public interface XirIcons
+{
+  @NonNls
+  Icon XIR_ICON = IconLoader.findIcon("/icons/lambda.png");
+
+  Icon SYMBOL = IconLoader.findIcon("/icons/symbol.png");
+
+}

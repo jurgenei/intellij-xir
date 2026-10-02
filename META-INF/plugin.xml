@@ -1,0 +1,66 @@
+<idea-plugin url="https://github.com/Saigut/intellij-xir">
+  <name>XIR</name>
+  <id>intellij-xir</id>
+  <description>Plugin for supporting XIR programming language</description>
+  <category>Custom Languages</category>
+  <version>0.1.11</version>
+  <vendor url="https://saigut.com">Tony Saigut</vendor>
+  <depends>com.intellij.modules.lang</depends>
+  <depends>com.intellij.modules.platform</depends>
+  <idea-version since-build="201.6668.113"/>
+
+  <change-notes><![CDATA[
+    1. Fix hardcoded file extensions<br>
+    2. Fix rename validator<br>
+    3. Support special characters<br>
+    4. Fix compilation error since IU-233.*<br>
+    5. Fix runtime exceptions<br>
+    6. Improve setting page performance<br>
+    ]]>
+  </change-notes>
+
+  <extensions defaultExtensionNs="com.intellij">
+    <fileType name="XIR"
+              implementationClass="main.file.XirFileType" fieldName="XIR_FILE_TYPE"
+              language="XIR" extensions="xir"/>
+
+    <lang.parserDefinition language="XIR"
+                           implementationClass="main.parser.XirParserDefinition"/>
+    <lang.findUsagesProvider language="XIR"
+                             implementationClass="main.findUsages.XirFindUsagesProvider"/>
+    <lang.braceMatcher language="XIR"
+                       implementationClass="main.highlighter.XirBraceMatcher"/>
+    <lang.commenter language="XIR"
+                    implementationClass="main.highlighter.XirCommenter"/>
+    <lang.formatter language="XIR"
+                    implementationClass="main.formatter.XirFormattingModelBuilder"/>
+    <lang.psiStructureViewFactory language="XIR"
+                                  implementationClass="main.structure.XirStructureViewBuilderFactory"/>
+    <lang.foldingBuilder language="XIR"
+            implementationClass="main.fold.XirFoldingBuilder"/>
+    <lang.namesValidator language="XIR"
+            implementationClass="main.utils.XirNamesValidator"/>
+
+    <gotoSymbolContributor implementation="main.gotoclass.XirGoToSymbolContributor"/>
+    <syntaxHighlighter key="XIR"
+                       implementationClass="main.highlighter.XirSyntaxHighlighter"/>
+    <annotator language="XIR" implementationClass="main.annotator.XirAnnotator"/>
+
+    <colorSettingsPage implementation="main.settings.colorXir.XirColorsAndFontsPage"/>
+    <codeStyleSettingsProvider
+      implementation="main.settings.codeStyle.XirCodeStyleSettingsProvider"/>
+    <langCodeStyleSettingsProvider
+            implementation="main.settings.codeStyle.XirLanguageCodeStyleSettingsProvider"/>
+
+    <stubElementTypeHolder class="main.parser.AST"/>
+    <stubIndex implementation="main.psi.stubs.index.XirClassNameIndex"/>
+    <stubIndex implementation="main.psi.stubs.index.XirFullScriptNameIndex"/>
+
+    <projectService serviceInterface="main.psi.util.XirPsiElementFactory"
+                    serviceImplementation="main.psi.util.XirPsiElementFactoryImpl"/>
+  </extensions>
+
+  <actions>
+  </actions>
+
+</idea-plugin>

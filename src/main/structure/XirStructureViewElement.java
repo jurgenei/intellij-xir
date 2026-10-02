@@ -1,0 +1,117 @@
+package main.structure;
+
+import com.intellij.ide.projectView.PresentationData;
+import com.intellij.ide.structureView.StructureViewTreeElement;
+import com.intellij.ide.util.treeView.smartTree.SortableTreeElement;
+import com.intellij.navigation.ItemPresentation;
+import com.intellij.psi.NavigatablePsiElement;
+import com.intellij.psi.PsiElement;
+import main.parser.AST;
+import main.psi.impl.XirFormExport;
+import main.psi.impl.XirFormLibrary;
+import org.jetbrains.annotations.NotNull;
+import main.psi.util.XirPsiUtil;
+
+import java.util.ArrayList;
+import java.util.List;
+
+
+public class XirStructureViewElement implements StructureViewTreeElement, SortableTreeElement
+{
+  private final NavigatablePsiElement element;
+  private NavigatablePsiElement nameChild;
+
+  public XirStructureViewElement(NavigatablePsiElement element)
+  {
+    nameChild = (NavigatablePsiElement)getDeclareNameChild(element);
+    if (nameChild == null) {
+      nameChild = element;
+    }
+    this.element = element;
+  }
+
+  public PsiElement getValue()
+  {
+    return element;
+  }
+
+  public void navigate(boolean requestFocus)
+  {
+    nameChild.navigate(requestFocus);
+  }
+
+  public boolean canNavigate()
+  {
+    return nameChild.canNavigate();
+  }
+
+  public boolean canNavigateToSource()
+  {
+    return nameChild.canNavigateToSource();
+  }
+
+  @NotNull
+  @Override
+  public String getAlphaSortKey() {
+    return nameChild != null ? nameChild.getText() : "";
+  }
+
+  @NotNull
+  @Override
+  public ItemPresentation getPresentation() {
+    ItemPresentation presentation = element.getPresentation();
+    return presentation != null ? presentation : new PresentationData();
+  }
+
+  @NotNull
+  public StructureViewTreeElement[] getChildren()
+  {
+    final List<XirStructureViewElement> childrenElements = new ArrayList<>();
+
+    if (element instanceof XirFormExport) {
+      PsiElement child = XirPsiUtil.getNormalChildAt(element, 1);
+      if (child == null) {
+        return EMPTY_ARRAY;
+      }
+      while (child != null) {
+        childrenElements.add(new XirStructureViewElement((NavigatablePsiElement)child));
+        child = XirPsiUtil.getPsiNextNonLeafSibling(child);
+      }
+      return childrenElements.toArray(new XirStructureViewElement[0]);
+    }
+
+    PsiElement child = element.getFirstChild();
+    if (child == null) {
+      return EMPTY_ARRAY;
+    }
+    while (child != null) {
+      if (isDeclarationFrom(child)) {
+        PsiElement nameChild = getDeclareNameChild(child);
+        if (nameChild != null) {
+          childrenElements.add(new XirStructureViewElement((NavigatablePsiElement)child));
+        }
+      }
+      child = child.getNextSibling();
+    }
+
+    return childrenElements.toArray(new XirStructureViewElement[0]);
+  }
+
+  private boolean isDeclarationFrom(PsiElement element) {
+    return AST.DEFINE_FORMS.contains(element.getNode().getElementType());
+  }
+
+  private PsiElement getDeclareNameChild(PsiElement element) {
+    if (element instanceof XirFormLibrary) {
+      PsiElement child = XirPsiUtil.getNormalChildAt(element, 1);
+      if (child == null) {
+        return null;
+      }
+      return XirPsiUtil.getPsiLastNonLeafChild(child);
+    } else if (element instanceof XirFormExport) {
+      return element;
+    } else {
+      return XirPsiUtil.getNormalChildAt(element, 1);
+    }
+  }
+}

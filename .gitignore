@@ -1,0 +1,6 @@
+.idea/
+out
+test-output
+jflex.log
+*.zip
+src/main/conversion/JavaToScala.scala

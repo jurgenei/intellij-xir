@@ -1,0 +1,59 @@
+package main.formatter.processors;
+
+import com.intellij.formatting.Block;
+import com.intellij.formatting.Spacing;
+import com.intellij.lang.ASTNode;
+import com.intellij.psi.PsiComment;
+import com.intellij.psi.tree.IElementType;
+import main.formatter.XirBlock;
+import main.lexer.XirTokens;
+import main.parser.AST;
+
+
+public class XirSpacingProcessor
+{
+  private static final Spacing NO_SPACING = Spacing.createSpacing(0, 0, 0, false, 0);
+  private static final Spacing NO_SPACING_WITH_NEWLINE = Spacing.createSpacing(0, 0, 0, true, 1);
+  private static final Spacing COMMON_SPACING = Spacing.createSpacing(1, 1, 0, true, 100);
+
+  public static Spacing getSpacing(Block child1, Block child2)
+  {
+    if (!(child1 instanceof XirBlock) || !(child2 instanceof XirBlock))
+    {
+      return null;
+    }
+    XirBlock block1 = (XirBlock) child1;
+    XirBlock block2 = (XirBlock) child2;
+
+    ASTNode node1 = block1.getNode();
+    ASTNode node2 = block2.getNode();
+
+    return getSpacingForAST(node1, node2);
+  }
+
+  public static Spacing getSpacingForAST(ASTNode node1, ASTNode node2)
+  {
+    IElementType type1 = node1.getElementType();
+    IElementType type2 = node2.getElementType();
+
+    if ((node2.getPsi() instanceof PsiComment)) {
+      ASTNode preNode = node2.getTreePrev();
+      if ((preNode.getElementType() == XirTokens.WHITESPACE)
+              && (preNode.getText().indexOf('\n') < 0)) {
+        return Spacing.getReadOnlySpacing();
+      }
+    }
+    if (XirTokens.DATUM_PREFIXES.contains(type1)
+            || type1 == AST.AST_BAD_CHARACTER)
+    {
+      return NO_SPACING;
+    }
+
+    if (XirTokens.BRACES.contains(type1) || XirTokens.BRACES.contains(type2))
+    {
+      return NO_SPACING_WITH_NEWLINE;
+    }
+
+    return COMMON_SPACING;
+  }
+}
